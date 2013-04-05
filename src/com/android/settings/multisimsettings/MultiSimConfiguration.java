@@ -328,7 +328,6 @@ public class MultiSimConfiguration extends PreferenceActivity {
             logd("hasCard():  " + hasCard() );
 //            mEnablerPreference.setEnabled(hasCard());
             mEnablerPreference.setEnabled(true);
-			mNetworkModeSetting.setEnabled(isSubActivated());
 	    mStatusInfo.setEnabled(isSubActivated());
 
             mDataRoamingEnabler.setEnabled(isSubActivated());
