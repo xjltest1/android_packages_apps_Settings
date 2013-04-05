@@ -57,31 +57,27 @@ public class CountDownPreference extends DialogPreference implements
     public CountDownPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        //setDialogLayoutResource(R.layout.multi_sim_count_down);
-        //setDialogIcon(R.drawable.ic_settings_date_time);
-/*
+        setDialogLayoutResource(R.layout.multi_sim_count_down);
+        setDialogIcon(R.drawable.ic_settings_date_time);
         try {
             mCurrentWaitTime = Settings.System.getInt(getContext().getContentResolver(),
                 Settings.System.MULTI_SIM_COUNTDOWN);
         } catch (SettingNotFoundException snfe) {
             mCurrentWaitTime = MultiSimSettingsConstants.DEFAULT_COUNTDOWN_TIME;
         }
-        */
-        mCurrentWaitTime = 0;
     }
 
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        /*mLabel = (TextView) view.findViewById(R.id.countdown_time_label);
+        mLabel = (TextView) view.findViewById(R.id.countdown_time_label);
         mSeekBar = (SeekBar) view.findViewById(com.android.internal.R.id.seekbar);
         mSeekBar.setMax(MAXIMUM_WAIT);
         mSeekBar.setProgress(mCurrentWaitTime == WAIT_INFINITE ? MAXIMUM_WAIT : mCurrentWaitTime);
         mSeekBar.setOnSeekBarChangeListener(this);
 
         mLabel.setText(getFormatTime(mCurrentWaitTime));
-        */
     }
 
     private String getFormatTime(int time) {
@@ -120,8 +116,8 @@ public class CountDownPreference extends DialogPreference implements
                 waitTime = WAIT_INFINITE;
             }
             mCurrentWaitTime = waitTime;
-            /*Settings.System.putInt(getContext().getContentResolver(),
-                    Settings.System.MULTI_SIM_COUNTDOWN, mCurrentWaitTime);*/
+            Settings.System.putInt(getContext().getContentResolver(),
+                    Settings.System.MULTI_SIM_COUNTDOWN, mCurrentWaitTime);
             setSummary(getFormatTime(mCurrentWaitTime));
         }
     }
