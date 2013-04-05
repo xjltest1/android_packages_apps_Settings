@@ -39,6 +39,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
 import android.provider.Telephony;
+import android.telephony.MSimTelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -83,6 +84,7 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     private RestoreApnProcessHandler mRestoreApnProcessHandler;
 
     private String mSelectedKey;
+    private int mSubscription = 0;
 
     private IntentFilter mMobileStateFilter;
 
@@ -119,6 +121,10 @@ public class ApnSettings extends SettingsPreferenceFragment implements
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.apn_settings);
 
+	mSubscription = getIntent().getIntExtra(SelectSubscription.SUBSCRIPTION_KEY,
+		MSimTelephonyManager.getDefault().getDefaultSubscription());
+	Log.d(TAG, "onCreate received sub :" + mSubscription);
+
         mMobileStateFilter = new IntentFilter(
                 TelephonyIntents.ACTION_ANY_DATA_CONNECTION_STATE_CHANGED);
         setHasOptionsMenu(true);
@@ -141,6 +147,15 @@ public class ApnSettings extends SettingsPreferenceFragment implements
     public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(mMobileStateReceiver);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        mSubscription = intent.getIntExtra(SelectSubscription.SUBSCRIPTION_KEY,
+                MSimTelephonyManager.getDefault().getDefaultSubscription());
+        Log.d(TAG, "onNewIntent received sub :" + mSubscription);
     }
 
     private void fillList() {
