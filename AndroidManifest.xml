@@ -590,6 +590,50 @@
                 android:resource="@id/display_settings" />
         </activity>
 
+        <!-- Multi Sim (Subscription) Settings change base on android original source-->
+        <activity android:name=".multisimsettings.MultiSimSettings"
+                android:label="@string/multi_sim_settings_title"
+                android:process="com.android.phone"
+                android:configChanges="orientation|screenSize"
+                android:clearTaskOnLaunch="true">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="com.android.settings.MULTI_SIM_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Multi Sim (Subscription) Settings Widget for Tab Layout-->
+        <activity android:name=".multisimsettings.MultiSimSettingTab"
+                android:label="@string/multi_sim_settings_title"
+                android:process="com.android.phone"
+                android:configChanges="orientation|screenSize">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Multi Sim Configuration in Tab Layout -->
+        <activity android:name=".multisimsettings.MultiSimConfiguration"
+                android:label="@string/multi_sim_settings_title"
+                android:process="com.android.phone">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Multi Sim Sound Setting Preference -->
+        <activity android:name=".multisimsettings.MultiSimSoundSettings"
+                android:label="@string/multi_sim_settings_title">
+           <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
         <!-- Keep compatibility with old shortcuts. -->
         <activity-alias android:name="DisplaySettings"
                 android:label="@string/display_settings"
@@ -601,21 +645,6 @@
             <meta-data android:name="com.android.settings.TOP_LEVEL_HEADER_ID"
                 android:resource="@id/display_settings" />
         </activity-alias>
-
-        <!-- Multi Sim (Subscription) Settings -->
-        <activity android:name="MultiSimSettings"
-                android:label="@string/multi_sim_settings_title"
-                android:process="com.android.phone"
-		android:configChanges="mcc|mnc"
-                android:clearTaskOnLaunch="true">
-           <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="com.android.settings.MULTI_SIM_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-        </activity>
 
         <activity android:name="Settings$DockSettingsActivity"
                 android:label="@string/dock_settings_title"

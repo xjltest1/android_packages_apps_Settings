@@ -102,7 +102,7 @@
         <intent
             android:action="android.intent.action.MAIN"
             android:targetPackage="com.android.settings"
-            android:targetClass="com.android.settings.MultiSimSettings" />
+            android:targetClass="com.android.settings.multisimsettings.MultiSimSettings" />
     </header>
 
     <!-- Sound -->
