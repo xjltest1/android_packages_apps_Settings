@@ -1680,5 +1680,16 @@
             </intent-filter>
         </receiver>
 
+<!--add by YELLOWSTONE_yangliu for getting the sim status used by activating or deactivating card operations begin-->
+        <receiver android:name=".SimStateReceiver" 
+            	android:process="com.android.phone">
+            <intent-filter>
+                <action android:name="android.intent.action.SIM_STATE_CHANGED"/>
+                <action android:name="android.intent.settings.DISABLE_GSM_CARD"/>
+                <action android:name="android.intent.settings.ENABLE_GSM_CARD"/>
+                <action android:name="android.intent.action.OPEN_RADIO_FOR_EMERGENCY"/>
+            </intent-filter>
+        </receiver>
+<!--add by YELLOWSTONE_yangliu for getting the sim status used by activating or deactivating card operations end-->
     </application>
 </manifest>

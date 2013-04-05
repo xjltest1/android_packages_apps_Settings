@@ -248,6 +248,9 @@ public class MultiSimEnabler extends CheckBoxPreference implements Preference.On
         if (!mActivateSub) {
             displayAlertDialog();
         }
+		else{
+             if (mDialogString != null) mDialogString = null;
+		}
     }
 
     private void displayAlertDialog() {
