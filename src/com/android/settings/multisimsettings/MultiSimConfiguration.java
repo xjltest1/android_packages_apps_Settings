@@ -153,8 +153,8 @@ public class MultiSimConfiguration extends PreferenceActivity {
 
         mSubscriptionManager = SubscriptionManager.getInstance();
 
-        mNamePreference = (MultiSimNamePreference)findPreference(KEY_SIM_NAME);
-        mNamePreference.setSubscription(mSubscription);
+        /*mNamePreference = (MultiSimNamePreference)findPreference(KEY_SIM_NAME);
+        mNamePreference.setSubscription(mSubscription);*/
 
         mEnablerPreference = (MultiSimEnabler)findPreference(KEY_SIM_ENABLER);
         mEnablerPreference.setSubscription(this, mSubscription, mHandler);
@@ -247,119 +247,23 @@ public class MultiSimConfiguration extends PreferenceActivity {
 			}
 		});
 
-        mNetworkModeSetting = (NetworkModeSelectListPreference)findPreference(KEY_NETWORK_MODE_SETTING);
-        mNetworkModeSetting.setSubscription(mSubscription);
 
         mStatusInfo = (PreferenceScreen)findPreference(KEY_STATUS_INFO);
 
-        mGsmOperatorSetting = (PreferenceScreen)findPreference(KEY_GSM_OPERATORS_SETTING);
         Intent mGsmOperatorSettingIntent = new Intent();
         mGsmOperatorSettingIntent.setClassName("com.android.phone", "com.android.phone.NetworkSetting");
         mGsmOperatorSettingIntent.putExtra(SUBSCRIPTION_KEY, mSubscription);
-        mGsmOperatorSetting.setIntent(mGsmOperatorSettingIntent);
-
-        mCdmaOperatorSetting = (PreferenceScreen)findPreference(KEY_CDMA_OPERATORS_SETTING);
-
-        if(mSubscription == 0)
-        {
-        	checkNetworkModeOnSlot1(SystemProperties.getInt("persist.radio.networkmode", 0));
-
-        }else
-        {
-        	mPrefScreen.removePreference(mCdmaOperatorSetting);
-        }
-
-        mNetworkModeSetting.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-
-			@Override
-			public boolean onPreferenceChange(Preference preference, Object newValue) {
-				if(mSubscription == 0)
-				{
-					String newNetworkMode = (String)newValue;
-					logd("newValue for  mNetworkModeSetting" + newNetworkMode );
-					checkNetworkModeOnSlot1(Integer.parseInt(newNetworkMode));
-
-					//mNetworkModeSetting's onDialogClose method is invoked after OnPreferenceChangeListener, so we just read previous property
-					if(SystemProperties.getInt("persist.radio.networkmode", 0) != Integer.parseInt(newNetworkMode))
-					{
-					    int gsm_flag = SystemProperties.getInt("persist.gsm.enable.switch1", 0);
-                        if(gsm_flag == 0)
-                        {
-        					String mnc_mcc_0 = "0000";//android.os.SystemProperties.get(TelephonyProperties.PROPERTY_SLOT_OPERATOR_NUMERIC);
-        					String mnc_mcc_1 = "0000";//android.os.SystemProperties.get(TelephonyProperties.PROPERTY_SLOT2_OPERATOR_NUMERIC);
-
-        					Log.d(LOG_TAG, "mnc_mcc_0: " + mnc_mcc_0 + " mnc_mcc_1: " + mnc_mcc_1);
-        					if((newNetworkMode.equals("1")) && (mnc_mcc_0.startsWith("460") || mnc_mcc_0.startsWith("455") || mnc_mcc_1.startsWith("460") || mnc_mcc_1.startsWith("455") ))
-        					{
-        						//network mode switch is forbidden. recover display
-        						checkNetworkModeOnSlot1(0);
-                            }
-                            else
-                            {
-        						showDialog(DIALOG_NETWORK_SELECTION);
-                            }
-                        }
-                        else
-                        {
-                            showDialog(DIALOG_NETWORK_SELECTION);
-                        }
-
-//						mHandler.postDelayed(new Runnable() {
-//
-//							@Override
-//							public void run() {
-//								removeDialog(DIALOG_NETWORK_SELECTION);
-//
-//							}
-//						}, 25000);
-
-					}
-				}
-				return true;
-			}
-		});
 
 
         mIntentFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
 
         //if(!FeatureQuery.FEATURE_SETTING_INTERNATIONAL_ROAMING_OPTIONS_JAVA)
-		if(false)
-        {
-        	logd("!FeatureQuery.FEATURE_SETTING_INTERNATIONAL_ROAMING_OPTIONS_JAVA" );
-        	mPrefScreen.removePreference(mNetworkModeSetting);
-        	mPrefScreen.removePreference(mGsmOperatorSetting);
-        	mPrefScreen.removePreference(mCdmaOperatorSetting);
-        	mPrefScreen.removePreference(mStatusInfo);
-        	mPrefScreen.removePreference(mDataRoamingEnabler);
-        	mPrefScreen.removePreference(mRoamingAutoReceiveMmsEnabler);
-        }else
-        {
-        	mPrefScreen.removePreference(mNamePreference);
-
-        }
-    }
-
-    //be careful, if mSubscription == 1, the mCdmaOperatorSetting is removed, and we should not invoke this method
-    private void checkNetworkModeOnSlot1(int currentNetworkMode)
-    {
-    	//int currentNetworkMode = SystemProperties.getInt("persist.ril.slot1.networkmode", 0);
-		if(currentNetworkMode == 0)
-		{
-			mGsmOperatorSetting.setEnabled(false);
-			mCdmaOperatorSetting.setEnabled(true);
-		}else
-		{
-			mCdmaOperatorSetting.setEnabled(false);
-			mGsmOperatorSetting.setEnabled(true);
-
-		}
     }
 
     protected void onResume() {
         super.onResume();
 
         registerReceiver(mReceiver, mIntentFilter);
-        mNamePreference.resume();
         mEnablerPreference.resume();
         setScreenState();
         checkDataRoamingState();
@@ -372,7 +276,6 @@ public class MultiSimConfiguration extends PreferenceActivity {
 
         unregisterReceiver(mReceiver);
         //mProxyManager.unRegisterForSetSubscriptionCompleted(mHandler);
-        mNamePreference.pause();
         mEnablerPreference.pause();
     }
 
@@ -415,10 +318,7 @@ public class MultiSimConfiguration extends PreferenceActivity {
             mNetworkSetting.setEnabled(false);
             mCallSetting.setEnabled(false);
             mEnablerPreference.setEnabled(false);
-            mNetworkModeSetting.setEnabled(false);
             mStatusInfo.setEnabled(false);
-            mGsmOperatorSetting.setEnabled(false);
-            mCdmaOperatorSetting.setEnabled(false);
             mDataRoamingEnabler.setEnabled(false);
             mRoamingAutoReceiveMmsEnabler.setEnabled(false);
         } else {
@@ -429,23 +329,8 @@ public class MultiSimConfiguration extends PreferenceActivity {
 //            mEnablerPreference.setEnabled(hasCard());
             mEnablerPreference.setEnabled(true);
 			mNetworkModeSetting.setEnabled(isSubActivated());
-            mStatusInfo.setEnabled(isSubActivated());
+	    mStatusInfo.setEnabled(isSubActivated());
 
-            if(isSubActivated())
-            {
-            	if(mSubscription == 0)
-            	{
-            		checkNetworkModeOnSlot1(SystemProperties.getInt("persist.radio.networkmode", 0));
-            	}else
-            	{
-            		mGsmOperatorSetting.setEnabled(true);
-            	}
-
-            }else
-            {
-            	mGsmOperatorSetting.setEnabled(false);
-            	mCdmaOperatorSetting.setEnabled(false);
-            }
             mDataRoamingEnabler.setEnabled(isSubActivated());
             mRoamingAutoReceiveMmsEnabler.setEnabled(isSubActivated());
 

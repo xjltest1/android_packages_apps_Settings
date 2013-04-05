@@ -84,7 +84,7 @@ public class MultiSimSettingsConstants {
    /**
        * Indicates multi sim network related setting class
        */
-    public static final String NETWORK_CLASS = "com.android.phone.MSimNetworkSettings";
+    public static final String NETWORK_CLASS = "com.android.phone.MSimMobileNetworkSubSettings";
 
    /**
        * Indicates multi sim call related setting package

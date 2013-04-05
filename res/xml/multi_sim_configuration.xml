@@ -36,45 +36,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             android:key="sim_enabler_key"
             android:title="@string/sim_enabler"/>
 
-        <com.android.settings.multisimsettings.MultiSimNamePreference
-            android:key="sim_name_key"
-            android:dialogTitle="@string/sim_naming_title"
-            android:persistent="false"
-            android:singleLine="true"
-            android:maxLength="6"/>
-
-        <com.android.settings.multisimsettings.NetworkModeSelectListPreference
-            android:key="network_choice_key"
-            android:title="@string/network_choice"
-        android:summary="@string/select_network_choice"
-            android:dialogTitle="@string/network_choice"
-            android:entries="@array/network_select_choices"
-        android:entryValues="@array/network_select_choices_values"
-            />
-
-        <PreferenceScreen
-        android:key="button_CDMA_carrier_sel_key"
-        android:title="@string/CDMA_networks"
-        android:persistent="false">
-
-        <intent android:action="android.intent.action.MAIN"
-            android:targetPackage="com.android.phone"
-            android:targetClass="com.android.phone.AvoidActivity" />
-
-    </PreferenceScreen>
-
-        <PreferenceScreen
-        android:key="button_GSM_carrier_sel_key"
-        android:title="@string/GSM_networks"
-        android:summary="@string/sum_carrier_select"
-        android:persistent="false">
-
-        <!-- intent android:action="android.intent.action.MAIN"
-            android:targetPackage="com.android.phone"
-            android:targetClass="com.android.phone.NetworkSetting" /-->
-
-    </PreferenceScreen>
-
     <PreferenceScreen android:key="status_info_key"
             android:title="@string/info_about_network">
         <intent android:action="android.intent.action.MAIN"
